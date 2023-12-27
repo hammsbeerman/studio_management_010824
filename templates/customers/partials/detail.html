@@ -1,0 +1,16 @@
+<h1>{{ object.company_name }} </h1>
+<small> <a href='{{ object.get_edit_url }}'>Edit</a></small>
+<p>Address: {{ object.address1 }}</p>
+<p>Address: {{ object.address2 }}</p>
+<p>City: {{ object.city }}</p>
+<p>State: {{ object.state }}</p>
+<p>Zipcode: {{ object.zipcode }}</p>
+<p>Phone: {{ object.phone1 }}</p>
+<p>Phone 2: {{ object.phone2 }}</p>
+<p>Email: {{ object.email }}</p>
+<p>Website: {{ object.website }}</p>
+
+
+{% for contact in object.get_contacts_children %}
+    <p>{{ contact.fname }} {{ contact.lname }}</p>
+{% endfor %}

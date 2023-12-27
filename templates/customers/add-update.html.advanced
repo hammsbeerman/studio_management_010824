@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .contact-form{
+        border-bottom: 1px solid black;
+    }
+    .hidden{
+        display: none
+    }
+</style>
+
+<h1>Add / Update Customer</h1> 
+<br/><a href='{{ object.get_absolute_url }}'>Back to Details</a></small><br/>
+
+
+<div style='margin-top:30px;'>
+
+    {% include 'customers/partials/forms.html' %}
+
+    {% if titles %}
+        <h3>Contact</h3>
+        {% for contact in object.get_contacts_children %}
+            {% include 'customers/partials/contact-inline.html' with object=contact %}
+        {% endfor %}
+        {% if new_contact_url %}
+        <div id='contact-create'>
+
+        </div>
+
+
+        <button hx-get="{{ new_contact_url }}" hx-trigger='click' hx-target='#contact-create' hx-swap='beforeend'>Add</button>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+
+{% endblock content %}

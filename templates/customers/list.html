@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Customers</h1> 
+
+
+
+<a href="{% url 'customers:create' %}">Add Customer</a>
+
+<p><ul>
+    {% for x in  object_list %}
+    <li><a href='{{ x.get_absolute_url }}'>{{ x.company_name }}</a></li>
+    {% endfor %}
+    </ul></p>
+
+
+
+
+
+
+{% endblock content %}

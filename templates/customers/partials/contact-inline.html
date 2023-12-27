@@ -1,0 +1,4 @@
+<div id="contact-{{ object.id }}">
+    {{ object.fname }} {{ object.lname }}
+    <button hx-trigger='click' hx-get='{{ object.get_hx_edit_url }}' hx-target='#contact-{{ object.id }}'>Edit</button>
+</div>

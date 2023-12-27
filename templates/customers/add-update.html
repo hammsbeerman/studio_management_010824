@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .hidden {
+        display: none
+    }
+</style>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+<div style='margin-top:30px;'>
+   {% include 'customers/partials/forms.html' %}
+
+   <h3>Contacts</h3>
+   {% for contact in object.get_contacts_children %}
+        {% include 'customers/partials/contact-inline.html' with object=contact %}
+   {% endfor %}
+   
+   {% if new_contact_url %}
+   
+   <div id='contact-create'></div>
+
+    <button hx-get="{{ new_contact_url }}" hx-trigger='click' hx-target='#contact-create' hx-swap='beforeend'>Add contact</button>
+   {% endif %}
+</div>
+
+<script>
+    
+
+    
+    document.addEventListener('click', (event)=>{
+        //console.log(event.target, event.target.id)
+        if (event.target.id == 'add-more') {
+            add_new_form(event)
+        }
+    })
+    
+
+
+
+    //addMoreBtn.addEventListener('click', add_new_form)
+
+    function add_new_form(event) {
+        if (event) {
+            event.preventDefault()
+        }
+        //const addMoreBtn = document.getElementById('add-more')
+        const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
+        const currentContactForms = document.getElementsByClassName('contact-form')
+        const currentFormCount = currentContactForms.length //+ 1
+        console.log(currentContactForms.length)
+        const formCopyTarget = document.getElementById('contact-form-list')
+        const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
+        //remove class from original item and change it to new class ex: from hidden to ingredient-form
+        copyEmptyFormEl.setAttribute('class', 'contact-form')
+        copyEmptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+        const regex = new RegExp('__prefix__', 'g')
+        copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)
+        totalNewForms.setAttribute('value', currentFormCount + 1)
+        formCopyTarget.append(copyEmptyFormEl)
+    }
+
+</script>
+
+
+{% endblock content %}

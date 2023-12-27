@@ -1,0 +1,8 @@
+<form action='.' method="POST" hx-post='{% if url %}{{ url }}{% else %}.{% endif %}' hx-swap='outerHTML'>
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+
+
+    <button style='margin-top:10px;' type='submit' >Save</button>
+</form>
