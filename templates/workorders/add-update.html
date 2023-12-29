@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<style>
+    .contact-form{
+        border-bottom: 1px solid black;
+    }
+    .hidden{
+        display: none
+    }
+</style>
+
+<h1>Add / Update Workorder</h1> 
+<p>
+<h3>Customer: {{ object.customer }}</h3>
+<a href='{{ object.get_absolute_url }}'>Back to Details</a></small><br/>
+
+<div style='margin-top:30px;'>
+
+    <!-- {{ form.customer.label_tag }}
+        {% render_field form.customer class="custom-select mb-4" autocomplete="off" hx-get="/workorders/contact/" hx-target="#id_contact" %}
+    -->
+       <!-- {{ form.contact.label_tag }}
+        {% render_field form.contact class="custom-select mb-4" autocomplete="off" %} -->
+
+    {% include 'workorders/partials/forms.html' %}
+    <p>
+    <p>
+    <h3>Invoices:</h3>
+    <div id='invoice-add'>
+
+    </div>
+    <button hx-get="{{ new_invoice_url }}" hx-trigger='click' hx-target='#invoice-add' hx-swap='beforeend'>Add Invoice</button>
+    <p>
+    <p>
+    {% if titles %}
+        <!-- Add Services-->
+        <h3>Services:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Description</th>
+                <th></th>
+        {% for item in object.get_services_children %}
+            {% include 'workorders/partials/service-inline.html' with object=item %}
+        {% endfor %}
+        </table>
+        {% if new_service_url %}
+        <div id='service-create'>
+
+        </div>
+
+
+        <button hx-get="{{ new_service_url }}" hx-trigger='click' hx-target='#service-create' hx-swap='beforeend'>Add Service</button>
+        {% endif %}
+
+        <!-- Add Inventory Items -->
+        <p>
+        <p>
+        <h3>Inventory Items:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Measurement</th>
+                <th>Price ea</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        {% for item in object.get_inventory_children %}
+            {% include 'workorders/partials/inventory-inline.html' with object=item %}
+        {% endfor %}
+        </table>
+        {% if new_inventory_url %}
+        <div id='inventory-create'>
+
+        </div>
+
+            
+        <button hx-get="{{ new_inventory_url }}" hx-trigger='click' hx-target='#inventory-create' hx-swap='beforeend'>Add Inventory Item</button>
+        {% endif %}
+
+        <!-- Add Non Inventory Items-->
+        <p>
+        <p>
+        <h3>Non Inventory Items:</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Measurement</th>
+                <th>Price ea</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        {% for item in object.get_noninventory_children %}
+            {% include 'workorders/partials/noninventory-inline.html' with object=item %}
+        {% endfor %}
+        </table>
+        {% if new_noninventory_url %}
+        <div id='noninventory-create'>
+
+        </div>
+
+
+        <button hx-get="{{ new_noninventory_url }}" hx-trigger='click' hx-target='#noninventory-create' hx-swap='beforeend'>Add NonInventory Item</button>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+
+{% endblock content %}

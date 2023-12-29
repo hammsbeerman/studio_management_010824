@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Workorders</h1> 
+
+
+
+<a href="{% url 'workorders:createbase' %}">Add Workorder</a>
+
+<p><ul>
+    {% for x in  object_list %}
+    <li><a href='{{ x.get_absolute_url }}'>{{ x.workorder }} - {{ x.description }}</a></li>
+    {% endfor %}
+    </ul></p>
+
+
+
+
+
+
+{% endblock content %}

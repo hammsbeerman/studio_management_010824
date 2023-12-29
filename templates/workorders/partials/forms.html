@@ -1,0 +1,41 @@
+{% load widget_tweaks %}
+<div id='workorder-container'>
+    <!-- <form action='' method="POST" hx-post='' hx-swap='outerHTML' hx-trigger='{% if form.instance.id %}change delay:500ms,{% endif %} submit'> -->
+    <form action='' method="POST" hx-post='' hx-swap='outerHTML' hx-trigger='submit'>
+        {% csrf_token %}
+        {% if message %}
+    
+        <p> {{ message }} </p>
+    
+        {% endif %}
+        
+        <div name='contact_load' >
+           <input type="hidden" id="customer" name="customer" value="{{ object.customer_id }}" hx-get="{% url 'workorders:update-contact' %}?contact={{ object.contact_id }}" hx-trigger="load" hx-target="#id_contact">
+        </div>
+        
+        Current Contact: {{ object.contact.fname }} {{ object.contact.lname }}
+        
+        <!--{{ form.customer.label_tag }}
+        {% render_field form.customer class="custom-select mb-4" autocomplete="off" hx-get="/workorders/contact/" hx-target="#id_contact" %} -->
+
+        <!--{{ form.contact.label_tag }}
+        {% render_field form.contact class="custom-select mb-4" autocomplete="off" %} -->
+
+
+        {% for field in form %}
+        <div class='{% if field.field.required %}{{ form.required_css_class }}{% endif %}'>
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+        </div>
+        {% endfor %}
+    
+    
+     
+        <div class='htmx-indicator'>Loading...</div>
+        <button class='html-inverted-indicator' style='margin-top:10px;' type='submit'>Save</button>
+    
+    </form>
+    </div>

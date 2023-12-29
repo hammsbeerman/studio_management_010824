@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+
+<div>
+    <form action='/workorders/createbase/' method="POST">
+        {% csrf_token %}
+        
+        {% if error %}
+        {{ error }}
+        <br/>
+        {% endif %}
+
+        <select class="custom-select mb-4" name='customer' hx-get="{% url 'workorders:contacts' %}" hx-trigger="change" hx-target="#contacts">
+            <option value="0" selected>Customer</option>
+            {% for customer in customers %}
+                <option value="{{customer.pk}}">{{ customer.company_name }}</option>
+            {% endfor %}
+        </select> <a href="{% url 'customers:create' %}">Add Customer</a>
+
+        <div id="contacts">
+                {% include 'workorders/partials/contact-dropdown.html' %}
+        </div>
+        
+        {% if workordererror %}
+        {{ workordererror }}
+        {% endif %}
+        <div><input type='text' name='workorder' placeholder='Workorder' /></div>
+        <!-- <div><textarea name='description' placeholder='Description'></textarea></div>
+        <div><input type='text' name='deadline' placeholder='Deadline'></div>
+        <div><input type='text' name='budget' placeholder='Budget'/></div>
+        <div><input type='text' name='quoted_price' placeholder='Quoted Price'/></div> -->
+        <input type='submit' value='Create Workorder'></div>
+    </form>
+</div>
+
+{% endblock content %}

@@ -43,11 +43,13 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     'localflavor',
     'django_htmx',
+    'widget_tweaks',
 ]
 
 LOCAL_APPS = [
     'accounts',
     'customers',
+    'workorders',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS

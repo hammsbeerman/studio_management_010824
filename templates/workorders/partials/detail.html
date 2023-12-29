@@ -1,0 +1,76 @@
+<h1>{{ object.workorder }}</h1>
+    {% if object.get_edit_url %}
+    <small>
+        <a href='{{ object.get_edit_url }}'>Edit</a>
+        <a href='{{ object.get_delete_url }}'>Delete</a>
+    </small><br/>{% endif %}
+<p>
+    <table class="table table">
+        <tr>
+            <td>
+                Customer: {{ object.customer.company_name }}<br/>
+                Contact: {{ object.contact.fname }} {{ object.contact.lname }}
+ <p>Description: {{ object.description}}<br/>
+Deadline: {{ object.deadline}}<br />
+Budget: {% if object.budget %}${{ object.budget}}{% endif %}<br />
+Quoted Price: {% if object.quoted_price %}${{object.quoted_price}}{% endif %}
+ </td>
+ <td>
+    Invoices related to workorder:
+ </td>
+</tr>
+</table>
+<p>
+Services</p>
+<p>
+    <table class="table table-bordered">
+        <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Description</th>
+            <th>Line Total</th>
+            <th>Cost</th>
+            <th>Line Cost</th>
+        </tr>
+        {% for workorderservice in object.get_services_children %}
+        <tr><td>{{ workorderservice.item }}</td><td>{{workorderservice.billable_time }}</td><td>{% if workorderservice.custom_rate %}${{ workorderservice.custom_rate }} {% elif workorderservice.default_rate %}${{ workorderservice.default_rate }}{% endif %}</td><td>{{ workorderservice.description }}</td><td>{{ workorderservice.line_total_default }}</td><td></td><td></td></tr>
+    {% endfor %}
+    <table>
+<p>
+<p>Inventory Items</p>
+<p>
+    <table class="table table-bordered">
+        <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Measurement</th>
+            <th>Price ea</th>
+            <th>Description</th>
+            <th>Line Total</th>
+            <th>Cost</th>
+            <th>Line Cost</th>
+        </tr>
+        {% for workorderinventoryproduct in object.get_inventory_children %}
+        <tr><td>{{ workorderinventoryproduct.item }}</td><td>{{ workorderinventoryproduct.qty }}</td><td>{{ workorderinventoryproduct.measure }}</td><td>{% if workorderinventoryproduct.custom_rate %}${{ workorderinventoryproduct.custom_rate }} {% elif workorderinventoryproduct.price %}{{ workorderinventoryproduct.price }}{% endif %}</td><td>{{ workorderinventoryproduct.description }}</td><td>{{ workorderinventoryproduct.line_total_default }}</td><td></td><td></td></tr>
+    {% endfor %}
+    </table>
+    <p>
+        <p>Non - Inventory Items</p>
+        <p>
+        <table class="table table-bordered">
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Measurement</th>
+                <th>Price ea</th>
+                <th>Description</th>
+                <th>Line Total</th>
+                <th>Cost</th>
+                <th>Line Cost</th>
+            </tr>
+        {% for workordernoninventoryproduct in object.get_noninventory_children %}
+    <tr><td>{{ workordernoninventoryproduct.item }} </td><td>{{ workordernoninventoryproduct.qty }}</td><td>{{ workordernoninventoryproduct.measure }} </td><td>{% if workordernoninventoryproduct.custom_rate %}${{ workordernoninventoryproduct.custom_rate }} {% elif workordernoninventoryproduct.price %}{{ workordernoninventoryproduct.price }}{% endif %}</td><td>{{ workordernoninventoryproduct.description}}</td><td>{{ workordernoninventoryproduct.line_total_default}}</td><td></td><td></td></tr>
+    {% endfor %}
+    </table>
+
