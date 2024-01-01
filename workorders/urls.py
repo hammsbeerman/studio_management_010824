@@ -10,17 +10,10 @@ from .views import (
     update_contact,
     workorder_delete_view,
     workorder_item_update_hx_view, #Was workorder_invoice_update_hx_view
-    item_table,
-    get_item_list,
-    add_item,
-    submit_new_item,
-    cancel_add_item,
-    delete_item,
-    edit_item,
-    edit_item_submit,
     add_movie,
     movie_list,
     edit_movie,
+    workorder_item_list_view,
 
 )
 
@@ -38,16 +31,7 @@ urlpatterns = [
     path('movies/', movie_list, name='movie_list'),
     path('movies/<int:pk>/edit/', edit_movie, name='edit_movie'),
     #
-    #
-    path('table/', item_table, name='item_table'),
-    path('get_item_list/', get_item_list, name='get_item_list'),
-    path('add_item/', add_item, name='add_item'),
-    path('add_item_submit/', submit_new_item, name='submit_item'),
-    path('add_item_cancel/', cancel_add_item, name='cancel_add_item'),
-    #path('<int:item_pk>/delete_item', delete_item, name='delete_item'),
-    path('edit_item/<int:item_pk>/', edit_item, name='edit_item'),
-    path('<int:item_pk>/edit_item_submit/', edit_item_submit, name='edit_item_submit'),
-    #
+    path("item/<str:id>", workorder_item_list_view, name='workorder_item_list'),
     #
     path("hx/<str:parent_id>/invoice/", workorder_item_update_hx_view, name='hx-item-add'),
     path("hx/<str:parent_id>/item/", workorder_item_update_hx_view, name='hx-item-create'),

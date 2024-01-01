@@ -1,16 +1,16 @@
-from multiprocessing import parent_process
-from urllib.request import Request
+#from multiprocessing import parent_process
+#from urllib.request import Request
 #from winreg import REG_WHOLE_HIVE_VOLATILE
 
-from django.contrib.auth.decorators import login_required
-from django.forms.models import modelformset_factory #modelform for querysets
+#from django.contrib.auth.decorators import login_required
+#from django.forms.models import modelformset_factory #modelform for querysets
 from django.urls import reverse
 from django.http import Http404
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django import forms
-from django.forms import modelform_factory
+#from django import forms
+#from django.forms import modelform_factory
 
 from .models import Workorder, WorkorderItem
 from customers.models import Customer, CustomerContact
@@ -47,6 +47,22 @@ def edit_movie(request, pk):
         'form': form,
         'item': item,
     })
+
+def workorder_item_list_view(request, id=None):
+    print(id)
+    if not request.htmx:
+        raise Http404
+    try:
+        print(id)
+        obj = WorkorderItem.objects.get(Workorder.workorder=id)
+    except:
+        obj = None
+    if obj is  None:
+        return HttpResponse("Not found.")
+    context = {
+        "items": obj
+    }
+    return render(request, "workorders/partials/detail.html", context) 
 
 
 def workorder_list_view(request):
@@ -145,23 +161,16 @@ def workorder_detail_view(request, id=None):
 
 def workorder_detail_hx_view(request, id=None):
     if not request.htmx:
-        print("Here 1")
         raise Http404
     try:
         obj = Workorder.objects.get(workorder=id)
-        print("Here 2")
-        print(obj)
     except:
         obj = None
-        print("Here 3")
     if obj is  None:
-        print("Here 4")
         return HttpResponse("Not found.")
     context = {
         "object": obj
     }
-    #print (object.line_total_default)
-    print("Here 5")
     return render(request, "workorders/partials/detail.html", context) 
 
 def update_contact(request):
@@ -248,68 +257,3 @@ def workorder_item_update_hx_view(request, parent_id= None, id=None):
         return render(request, "workorders/partials/item-form.html", context)
     print('4')
     return render(request, "workorders/partials/item-form.html", context)
-
-
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = WorkorderItem
-        exclude = []
-
-def item_table(request):
-    #qs = Customer.objects.filter(user=request.user)
-    #qs = Workorder.objects.all().order_by('-workorder')
-    context = {
-    }
-    return render(request, "workorders/table.html", context)
-
-def get_item_list(request):
-    context ={}
-    context['items'] = WorkorderItem.objects.all()
-    return render(request, 'workorders/partials/item_list.html', context)
-
-def add_item(request):
-    context = {'form': ItemForm()}
-    return render(request, 'workorders/partials/add_item.html', context)
-
-def submit_new_item(request):
-    context = {}
-    form = ItemForm(request.POST)
-    context['form'] = form
-    if form.is_valid():
-        context['item'] = form.save()
-    else:
-        return render(request, 'workorders/partials/add_item.html', context)
-    return render(request, 'workorders/partials/item_row.html', context)
-
-def cancel_add_item(request):
-    return HttpResponse()
-
-def delete_item(request, item):
-    item = WorkorderItem.objects.get(pk=item)
-    item.delete()
-    return HttpResponse()
-
-def edit_item(request, item_pk=None):
-    item = WorkorderItem.objects.get(pk=item_pk)
-    context = {}
-    context['item'] = item
-    context['form'] = ItemForm(initial={
-        'workorder':item.workorder,
-        'item_category': item.item_category,
-        'description': item.description,
-        'age': item.age,
-        'major': item.major
-    })
-    return render(request, 'workorders/partials/edit_item.html', context)
-
-def edit_item_submit(request, item_pk=None):
-    context = {}
-    item = WorkorderItem.objects.get(pk=item_pk)
-    context['item'] = item
-    if request.method == 'POST':
-        form = ItemForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-        else:
-            return render(request, 'workorders/partials/edit_item.html', context)
-    return render(request, 'workorders/partials/item_row.html', context)

@@ -32,6 +32,10 @@ class Workorder(models.Model):
     def get_delete_url(self): #reference these, that way changes are only made one place
         return reverse("workorders:delete", kwargs={"id": self.id})
 
+    def get_item_list_url(self):
+        #return "/pantry/recipes/"
+        return reverse("workorders:item-list", kwargs={"id": self.id})
+
     def get_contacts_children(self):
         return self.contact_set.all()
     
