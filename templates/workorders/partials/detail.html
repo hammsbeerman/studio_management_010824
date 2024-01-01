@@ -3,24 +3,42 @@
     <small>
         <a href='{{ object.get_edit_url }}'>Edit</a>
         <a href='{{ object.get_delete_url }}'>Delete</a>
-    </small><br/>{% endif %}
+    </small><br/>
+    {% endif %}
 <p>
     <table class="table table">
         <tr>
             <td>
                 Customer: {{ object.customer.company_name }}<br/>
-                Contact: {{ object.contact.fname }} {{ object.contact.lname }}
- <p>Description: {{ object.description}}<br/>
-Deadline: {{ object.deadline}}<br />
-Budget: {% if object.budget %}${{ object.budget}}{% endif %}<br />
-Quoted Price: {% if object.quoted_price %}${{object.quoted_price}}{% endif %}
- </td>
- <td>
-    Invoices related to workorder:
- </td>
-</tr>
-</table>
+                Contact: {{ object.contact.fname }} {{ object.contact.lname }}<br/>
+                Description: {{ object.description}}<br/>
+                Deadline: {{ object.deadline}}<br />
+                Budget: {% if object.budget %}${{ object.budget}}{% endif %}<br />
+                Quoted Price: {% if object.quoted_price %}${{object.quoted_price}}{% endif %}<br/>
+                <!-- <a href='{{ object.get_edit_url }}'>Add Line Item</a> -->
+            </td>
+            <td>
+                Original Workorder:<br/>
+                {{ object.original_order }}
+            </td>
+            <td>
+                Invoices related to workorder:<br/>   
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+
+
+
+
 <p>
+<hr>
+
+
 Services</p>
 <p>
     <table class="table table-bordered">
