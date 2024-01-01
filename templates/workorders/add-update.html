@@ -28,91 +28,86 @@
 
     {% include 'workorders/partials/forms.html' %}
     <p>
-    <p>
-    <h3>Invoices:</h3>
-    <div id='invoice-add'>
+        <p>
 
-    </div>
-    <button hx-get="{{ new_invoice_url }}" hx-trigger='click' hx-target='#invoice-add' hx-swap='beforeend'>Add Invoice</button>
+          <!-- Modal Area -->
+            <div class="container">
+                <div class="px-5 my-5 text-center">
+                  <h1>My Movie Collection</h1>
+                  <p>A sample project that shows how to support modal forms with Django+HTMX with minimal JavaScript code.</p>
+                </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Year</th>
+                      <th>Rating</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody hx-trigger="load, movieListChanged from:body" hx-get="{% url 'workorders:movie_list' %}" hx-target="this">
+                    <tr>
+                      <td class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <button hx-get="{% url 'workorders:add_movie' %}" hx-target="#dialog" class="btn btn-primary">
+                Add a movie
+                </button>
+            </div>
+
+
+    <div id="modal" class="modal fade">
+        <div id="dialog" class="modal-dialog" hx-target="this"></div>
+      </div>
+
+      <!-- End of Modal -->
+      
     <p>
     <p>
-    {% if titles %}
+        {% if titles %}
         <!-- Add Services-->
-        <h3>Services:</h3>
+        <h3>Items:</h3>
         <table class="table table-bordered">
+        <thead>
             <tr>
                 <th>Item</th>
-                <th>Qty</th>
-                <th>Rate</th>
                 <th>Description</th>
-                <th></th>
-        {% for item in object.get_services_children %}
-            {% include 'workorders/partials/service-inline.html' with object=item %}
-        {% endfor %}
-        </table>
-        {% if new_service_url %}
-        <div id='service-create'>
-
-        </div>
-
-
-        <button hx-get="{{ new_service_url }}" hx-trigger='click' hx-target='#service-create' hx-swap='beforeend'>Add Service</button>
-        {% endif %}
-
-        <!-- Add Inventory Items -->
-        <p>
-        <p>
-        <h3>Inventory Items:</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th>Item</th>
                 <th>Qty</th>
-                <th>Measurement</th>
-                <th>Price ea</th>
-                <th>Description</th>
-                <th></th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
             </tr>
-        {% for item in object.get_inventory_children %}
-            {% include 'workorders/partials/inventory-inline.html' with object=item %}
+        </thead>
+        <tbody id="item_data">
+        
+        {% for item in object.get_item_children %}
+            {% include 'workorders/partials/item-inline.html' with object=item %}
         {% endfor %}
+        </tbody>
         </table>
-        {% if new_inventory_url %}
-        <div id='inventory-create'>
-
-        </div>
-
-            
-        <button hx-get="{{ new_inventory_url }}" hx-trigger='click' hx-target='#inventory-create' hx-swap='beforeend'>Add Inventory Item</button>
-        {% endif %}
-
-        <!-- Add Non Inventory Items-->
-        <p>
-        <p>
-        <h3>Non Inventory Items:</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th>Measurement</th>
-                <th>Price ea</th>
-                <th>Description</th>
-                <th></th>
-            </tr>
-        {% for item in object.get_noninventory_children %}
-            {% include 'workorders/partials/noninventory-inline.html' with object=item %}
-        {% endfor %}
-        </table>
-        {% if new_noninventory_url %}
-        <div id='noninventory-create'>
+        
+        
+        {% if new_item_url %}
+        <div id='item-create'>
 
         </div>
 
 
-        <button hx-get="{{ new_noninventory_url }}" hx-trigger='click' hx-target='#noninventory-create' hx-swap='beforeend'>Add NonInventory Item</button>
+        <button hx-get="{{ new_item_url }}" hx-trigger='click' hx-target='#item-create' hx-swap='beforeend'>Add Item</button>
         {% endif %}
-    {% endif %}
+        {% endif %}
+    
+
+    
+
 
 </div>
+
+
+
 
 
 {% endblock content %}

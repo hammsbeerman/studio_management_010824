@@ -1,0 +1,12 @@
+{% for object in items %}
+    <tr>
+        <td>{{ object.workorder }}</td>
+        <td>{{ object.item_category }}</td>
+        <td>{{ object.description }}</td>
+        <td>{{ object.quantity }}</td>
+        <td>{{ object.unit_price }}</td>
+        <td>{{ object.total_price }}</td>
+        <td><button class="btn btn-primary btn-sm" hx-get="{% url 'workorders:edit_movie' pk=object.pk %}" hx-target="#dialog">Edit</button></td>
+        
+    </tr>
+{% endfor %}

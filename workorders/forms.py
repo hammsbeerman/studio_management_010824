@@ -1,6 +1,6 @@
 from django.utils.safestring import mark_safe
 from django import forms
-from .models import Workorder
+from .models import Workorder, WorkorderItem
 from customers.models import Customer, CustomerContact
 from dynamic_forms import DynamicField, DynamicFormMixin
 
@@ -28,3 +28,8 @@ class WorkorderForm(DynamicFormMixin, forms.ModelForm):
             )
         self.fields['description'].widget.attrs.update({'rows': '2'})
         self.fields['contact'].label = ''
+
+class WorkorderItemForm(forms.ModelForm):
+   class Meta:
+       model = WorkorderItem
+       fields = ['item_category', 'description', 'quantity', 'unit_price', 'total_price']

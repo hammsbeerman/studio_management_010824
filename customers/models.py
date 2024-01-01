@@ -19,6 +19,7 @@ class Customer(models.Model):
     active = models.BooleanField(default=True)
 
 
+
     def get_absolute_url(self):
         return reverse("customers:detail", kwargs={"id": self.id})
     
@@ -60,7 +61,7 @@ class CustomerContact(models.Model):
         }
         return reverse("customers:hx-contact-update", kwargs=kwargs)
 
-    #def __str__(self):
-    #    return self.fname
+    def __str__(self):
+        return self.fname
 
 

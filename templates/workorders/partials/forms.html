@@ -9,16 +9,16 @@
     
         {% endif %}
         
-        <div name='contact_load' >
+         <div name='contact_load' >
            <input type="hidden" id="customer" name="customer" value="{{ object.customer_id }}" hx-get="{% url 'workorders:update-contact' %}?contact={{ object.contact_id }}" hx-trigger="load" hx-target="#id_contact">
-        </div>
+        </div> 
         
         Current Contact: {{ object.contact.fname }} {{ object.contact.lname }}
         
-        <!--{{ form.customer.label_tag }}
-        {% render_field form.customer class="custom-select mb-4" autocomplete="off" hx-get="/workorders/contact/" hx-target="#id_contact" %} -->
+        <!-- {{ form.customer.label_tag }}
+        {% render_field form.customer class="custom-select mb-4" autocomplete="off" hx-get="/workorders/contact/" hx-target="#id_contact" %}
 
-        <!--{{ form.contact.label_tag }}
+        {{ form.contact.label_tag }}
         {% render_field form.contact class="custom-select mb-4" autocomplete="off" %} -->
 
 

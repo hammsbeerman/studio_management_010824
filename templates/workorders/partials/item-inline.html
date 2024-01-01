@@ -1,0 +1,24 @@
+
+    <tr id="item-{{ object.id }}">
+        <td>{{ object.item_category }}</td>
+        <td>{{ object.description }}</td>
+        <td>{{ object.quantity }}</td>
+        <td>{{ object.unit_price }} </td>
+        <td>{{ object.total_price }}</td>
+        <!-- <td><button hx-trigger='click' hx-get='{{ object.get_hx_edit_url }}' hx-target="#item-{{ object.id }}">Edit Me</button></td> -->
+        <td><button hx-trigger='click' hx-get='{{ object.get_hx_edit_url }}' hx-target="#item-{{ object.id }}">Edit Me</button></td>
+    </tr>
+
+
+<!--
+<div id="service-{{ object.id }}">
+    <tr>
+        <td>{{ object.item }}</td>
+        <td>{{ object.billable_time }}</td>
+        <td>{% if object.custom_rate %}${{ object.custom_rate }} {% elif object.default_rate %}${{ object.default_rate }}{% endif %}
+        <td>{{ object.description }}</td>
+        
+    
+    <td><button hx-trigger='click' hx-get='{{ object.get_hx_edit_url }}' hx-target="#service-{{ object.id }}">Edit</button></td></tr>
+</div>
+-->

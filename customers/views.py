@@ -126,6 +126,7 @@ def customer_contact_update_hx_view(request, parent_id=None, id=None):
     url = reverse("customers:hx-contact-create", kwargs={"parent_id": parent_obj.id})
     if instance:
         #print (request.POST.get('fname'))
+        #print (instance.customer.id)
         url = instance.get_hx_edit_url()
     context = {
         "url": url,

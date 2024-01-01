@@ -36,7 +36,7 @@ class CustomerContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            print(field)
+            #print(field)
             new_data = {
                 "placeholder": f'Contact {str(field)}',
                 "class": 'form-control',
