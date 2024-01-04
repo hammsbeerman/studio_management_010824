@@ -17,10 +17,14 @@ from customers.models import Customer, CustomerContact
 #from inventory.models import Service, Inventory
 from .forms import WorkorderForm, WorkorderItemForm
 
-def add_movie(request):
+def add_item(request, parent_id):
+    print(parent_id)
     if request.method == "POST":
         form = WorkorderItemForm(request.POST)
         if form.is_valid():
+            obj = form.save(commit=False)
+            #Add workorder to form since it wasn't displayed
+            obj.workorder_id = parent_id
             form.save()
             return HttpResponse(status=204, headers={'HX-Trigger': 'movieListChanged'})
     else:
@@ -29,6 +33,15 @@ def add_movie(request):
         'form': form,
     })
 
+# def item_add_view(request, id=None):
+#     add_url = reverse("workorders:item_add", kwargs={"id": id})
+#     context = {
+#         "add_url": add_url
+#     }
+#     return render(request, "workorders/partials/add.html", context)
+
+
+
 def movie_list(request):
     return render(request, 'workorders/partials/movie_list.html', {
         'items': WorkorderItem.objects.all(),
@@ -36,6 +49,13 @@ def movie_list(request):
 
 def edit_movie(request, pk):
     item = get_object_or_404(WorkorderItem, pk=pk)
+    # print(item.id)
+    # new_item_url = reverse("workorders:add_item", kwargs={"parent_id": item.id})
+    # #item = item.id
+    # #print(item)
+    # context = {
+    #     "new_item_url": new_item_url
+    # }
     if request.method == "POST":
         form = WorkorderItemForm(request.POST, instance=item)
         if form.is_valid():
@@ -54,7 +74,11 @@ def workorder_item_list_view(request, id=None):
         raise Http404
     try:
         print(id)
-        obj = WorkorderItem.objects.get(Workorder.workorder=id)
+        id=1
+        #obj = get_object_or_404(Workorder, id=id,)
+        #qs = Workorder.objects.all()
+        obj = WorkorderItem.objects.filter(workorder=id)
+        #print(obj)
     except:
         obj = None
     if obj is  None:
@@ -62,7 +86,7 @@ def workorder_item_list_view(request, id=None):
     context = {
         "items": obj
     }
-    return render(request, "workorders/partials/detail.html", context) 
+    return render(request, "workorders/partials/movie_list.html", context) 
 
 
 def workorder_list_view(request):
@@ -154,8 +178,15 @@ def workorder_update_view(request, id=None):
 
 def workorder_detail_view(request, id=None):
     hx_url = reverse("workorders:hx-detail", kwargs={"id": id})
+    obj = Workorder.objects.get(workorder=id)
+    workorder = obj.workorder
+    parent_id = obj.id
+    print(parent_id)
+    print(workorder)
     context = {
-        "hx_url": hx_url
+        "hx_url": hx_url,
+        "workorder": workorder,
+        "parent_id": parent_id,
     }
     return render(request, "workorders/detail.html", context)
 

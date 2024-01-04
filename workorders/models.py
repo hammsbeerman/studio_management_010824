@@ -76,6 +76,16 @@ class WorkorderItem(models.Model):
     def get_absolute_url(self):
         return self.workorder.get_absolute_url()
     
+    #def get_workorder_add(self):
+    #    return reverse("workorders:detail", kwargs={"id": self.workorder})
+
+    def get_workorder_add_url(self):
+        kwargs = {
+            "parent_id": self.workorder.id,
+            "id": self.id
+        }
+        return reverse("workorders:add", kwargs=kwargs)
+    
     def get_hx_edit_url(self):
         kwargs = {
             "parent_id": self.workorder.id,
@@ -86,9 +96,12 @@ class WorkorderItem(models.Model):
 
 
 
-    def __str__(self):
-        return self.workorder.workorder + ' -- ' + self.description
+    #def __str__(self):
+    #    return self.workorder.workorder #+ ' -- ' + self.description
 
+    def __str__(self):
+        return self.description
+    
 
 
 

@@ -10,7 +10,7 @@ from .views import (
     update_contact,
     workorder_delete_view,
     workorder_item_update_hx_view, #Was workorder_invoice_update_hx_view
-    add_movie,
+    add_item,
     movie_list,
     edit_movie,
     workorder_item_list_view,
@@ -27,11 +27,11 @@ urlpatterns = [
     path('updatecontact/', update_contact, name='update-contact'),
     #
     #
-    path('add/', add_movie, name='add_movie'),
+    path('add/<int:parent_id>/', add_item, name='add_item'),
     path('movies/', movie_list, name='movie_list'),
     path('movies/<int:pk>/edit/', edit_movie, name='edit_movie'),
     #
-    path("item/<str:id>", workorder_item_list_view, name='workorder_item_list'),
+    path("item/<int:id>/", workorder_item_list_view, name='workorder_item_list'),
     #
     path("hx/<str:parent_id>/invoice/", workorder_item_update_hx_view, name='hx-item-add'),
     path("hx/<str:parent_id>/item/", workorder_item_update_hx_view, name='hx-item-create'),
