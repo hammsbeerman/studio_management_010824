@@ -6,7 +6,8 @@
         <td>{{ object.quantity }}</td>
         <td>{{ object.unit_price }}</td>
         <td>{{ object.total_price }}</td>
-        <td><button class="btn btn-primary btn-sm" hx-get="{% url 'workorders:edit_movie' pk=object.pk %}" hx-target="#dialog">Edit</button></td>
+        <td><button class="btn btn-primary btn-sm" hx-get="{% url 'workorders:edit_item' pk=object.pk cat=object.item_category_id %}" hx-target="#dialog">Edit</button></td>
+        
         
     </tr>
 {% endfor %}

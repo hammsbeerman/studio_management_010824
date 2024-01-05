@@ -8,28 +8,29 @@ from django.urls import reverse
 from django.http import Http404
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 #from django import forms
 #from django.forms import modelform_factory
 
-from .models import Workorder, WorkorderItem
+from .models import Workorder, WorkorderItem, Category
 from customers.models import Customer, CustomerContact
 #from inventory.models import Service, Inventory
-from .forms import WorkorderForm, WorkorderItemForm
+from .forms import WorkorderForm, WorkorderItemForm, WorkorderNewItemForm
 
 def add_item(request, parent_id):
     print(parent_id)
     if request.method == "POST":
-        form = WorkorderItemForm(request.POST)
+        form = WorkorderNewItemForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
             #Add workorder to form since it wasn't displayed
             obj.workorder_id = parent_id
             form.save()
-            return HttpResponse(status=204, headers={'HX-Trigger': 'movieListChanged'})
+            return HttpResponse(status=204, headers={'HX-Trigger': 'itemListChanged'})
     else:
-        form = WorkorderItemForm()
-    return render(request, 'workorders/partials/movie_form.html', {
+        form = WorkorderNewItemForm()
+    return render(request, 'workorders/partials/new_item_form.html', {
         'form': form,
     })
 
@@ -40,33 +41,51 @@ def add_item(request, parent_id):
 #     }
 #     return render(request, "workorders/partials/add.html", context)
 
+def modal(request):
+    return render(request, "workorders/modal.html",) 
 
-
-def movie_list(request):
-    return render(request, 'workorders/partials/movie_list.html', {
+def item_list(request):
+    return render(request, 'workorders/partials/item_list.html', {
         'items': WorkorderItem.objects.all(),
     })
 
-def edit_movie(request, pk):
+def edit_item(request, pk, cat):
     item = get_object_or_404(WorkorderItem, pk=pk)
-    # print(item.id)
-    # new_item_url = reverse("workorders:add_item", kwargs={"parent_id": item.id})
-    # #item = item.id
-    # #print(item)
-    # context = {
-    #     "new_item_url": new_item_url
-    # }
     if request.method == "POST":
-        form = WorkorderItemForm(request.POST, instance=item)
+        form = WorkorderItemForm(request.POST, instance=item, cat=cat)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204, headers={'HX-Trigger': 'movieListChanged'})
+            return HttpResponse(status=204, headers={'HX-Trigger': 'itemListChanged'})
     else:
+        print(cat)
+        obj = Category.objects.get(id=cat)        
+        print(obj)
         form = WorkorderItemForm(instance=item)
-    return render(request, 'workorders/partials/movie_form.html', {
+    return render(request, 'workorders/partials/item_form.html', {
         'form': form,
         'item': item,
+        'obj': obj,
     })
+
+# def edit_right(request, pk):
+#     item = get_object_or_404(WorkorderItem, pk=pk)
+#     if request.method == "POST":
+#         form = WorkorderItemForm(request.POST, instance=item)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponse(status=204, headers={'HX-Trigger': 'itemListChanged'})
+#     else:
+#         form = WorkorderItemForm(instance=item)
+#     return render(request, 'workorders/partials/item_right_form.html', {
+#         'form': form,
+#         'item': item,
+#     })
+
+@ require_POST
+def remove_workorder_item(request, pk):
+    item = get_object_or_404(WorkorderItem, pk=pk)
+    item.delete()
+    return HttpResponse(status=204, headers={'HX-Trigger': 'itemListChanged'})
 
 def workorder_item_list_view(request, id=None):
     print(id)
@@ -86,7 +105,7 @@ def workorder_item_list_view(request, id=None):
     context = {
         "items": obj
     }
-    return render(request, "workorders/partials/movie_list.html", context) 
+    return render(request, "workorders/partials/item_list.html", context) 
 
 
 def workorder_list_view(request):

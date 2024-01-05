@@ -16,17 +16,21 @@
 {% with WIDGET_ERROR_CLASS='is-invalid' %}
 <form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title">Edit Movie</h5>
+    <h5 class="modal-title">Edit Item</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    {{ form.as_p }}
+    {{ obj.name }}
+    {{obj.description}}
+    {{obj.design_type}}
+    {% if form.workorder %}{{form.workorder}}{% endif %}
+    {% if obj.design_type %}{{ form.design_type }}{% endif %}
   </div>
   <div class="modal-footer">
-    {% comment %} {% if item %}
-    <button type="button" class="btn btn-danger" hx-post="{% url 'remove_movie' pk=movie.pk %}">Remove</button>
+    {% if item %}
+    <button type="button" class="btn btn-danger" hx-post="{% url 'workorders:remove_item' pk=item.pk %}">Remove</button>
     <span class="flex-grow-1"></span>
-    {% endif %} {% endcomment %}
+    {% endif %}
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
       Cancel
     </button>

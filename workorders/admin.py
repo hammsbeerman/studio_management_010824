@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Workorder, ItemCategory, Category, WorkorderItem
+from .models import Workorder, ItemCategory, Category, WorkorderItem, DesignType
 
 
 class WorkorderAdmin(admin.ModelAdmin):
@@ -24,5 +24,7 @@ admin.site.register(ItemCategory, ItemCategoryAdmin)
 #    fields = ['workorder', 'description', 'category', 'internal_company']
 
 admin.site.register(Category)
+
+admin.site.register(DesignType)
 
 admin.site.register(WorkorderItem)

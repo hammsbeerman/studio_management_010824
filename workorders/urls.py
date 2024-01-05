@@ -11,9 +11,12 @@ from .views import (
     workorder_delete_view,
     workorder_item_update_hx_view, #Was workorder_invoice_update_hx_view
     add_item,
-    movie_list,
-    edit_movie,
+    item_list,
+    edit_item,
     workorder_item_list_view,
+    remove_workorder_item,
+    #edit_right,
+    modal,
 
 )
 
@@ -25,11 +28,15 @@ urlpatterns = [
     path("createbase/", create_base, name='createbase'), #Create base details of new workorder
     path('contacts/', contacts, name='contacts'), #Fills the contact dropdown on createbase/
     path('updatecontact/', update_contact, name='update-contact'),
+    path('modal/', modal, name='modal'),
     #
     #
     path('add/<int:parent_id>/', add_item, name='add_item'),
-    path('movies/', movie_list, name='movie_list'),
-    path('movies/<int:pk>/edit/', edit_movie, name='edit_movie'),
+    path('items/', item_list, name='item_list'),
+    #path('items/<int:pk>/edit/<int:cat>/', edit_item, name='edit_item'),
+    path('items/<int:pk>/edit/<int:cat>', edit_item, name='edit_item'),
+    #path('items/<int:pk>/editright/', edit_right, name='edit_right'),
+    path('items/<int:pk>/remove/', remove_workorder_item, name='remove_item'),
     #
     path("item/<int:id>/", workorder_item_list_view, name='workorder_item_list'),
     #

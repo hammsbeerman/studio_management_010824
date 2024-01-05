@@ -48,6 +48,14 @@ class Workorder(models.Model):
 class Category(models.Model):
     name = models.CharField('Name', max_length=100, blank=True, null=True)
     description = models.CharField('Description', max_length=100, blank=True, null=True)
+    design_type = models.BooleanField('Design Type', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+    
+class DesignType(models.Model):
+    name = models.CharField('Name', max_length=100, blank=True, null=True)
+    description = models.CharField('Description', max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -68,10 +76,14 @@ class ItemCategory(models.Model):
 class WorkorderItem(models.Model):
     workorder = models.ForeignKey(Workorder, blank=False, null=True, on_delete=models.CASCADE)
     item_category = models.ForeignKey(Category, blank=False, null=False, on_delete=models.CASCADE)
+    design_type = models.ForeignKey(DesignType, blank=True, null=True, on_delete=models.CASCADE)
     description = models.CharField('Description', max_length=100, blank=False, null=False)
-    quantity = models.CharField('Quantity', max_length=100, blank=False, null=False)
-    unit_price = models.CharField('Unit Price', max_length=100, blank=False, null=False)
-    total_price = models.CharField('Total Price', max_length=100, blank=False, null=False)
+    quantity = models.DecimalField('Quantity', max_digits=6, decimal_places=2, blank=True, null=True)
+    unit_price = models.DecimalField('Unit Price', max_digits=10, decimal_places=3, blank=True, null=True)
+    total_price = models.DecimalField('Total Price', max_digits=8, decimal_places=2, blank=True, null=True)
+    #quantity = models.IntegerField('Quantity', blank=False, null=False)
+    #unit_price = models.IntegerField('Unit Price', blank=False, null=False)
+    #total_price = models.IntegerField('Total Price',  blank=False, null=False)
 
     def get_absolute_url(self):
         return self.workorder.get_absolute_url()
@@ -93,14 +105,14 @@ class WorkorderItem(models.Model):
         }
         return reverse("workorders:hx-workorder-item-detail", kwargs=kwargs)
 
-
-
-
     #def __str__(self):
-    #    return self.workorder.workorder #+ ' -- ' + self.description
+    #    return self.description
+
 
     def __str__(self):
-        return self.description
+        return self.workorder.workorder #+ ' -- ' + self.description
+
+
     
 
 

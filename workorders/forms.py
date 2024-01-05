@@ -32,4 +32,9 @@ class WorkorderForm(DynamicFormMixin, forms.ModelForm):
 class WorkorderItemForm(forms.ModelForm):
    class Meta:
        model = WorkorderItem
-       fields = ['item_category', 'description', 'quantity', 'unit_price', 'total_price']
+       fields = ['workorder', 'design_type', 'item_category', 'description', 'quantity', 'unit_price', 'total_price']
+
+class WorkorderNewItemForm(forms.ModelForm):
+   class Meta:
+       model = WorkorderItem
+       fields = ['item_category', 'description']
